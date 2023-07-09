@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
-const dotenv = require('dotenv');
+require('dotenv').config()
 const inquirer = require('inquirer');
 
 const PORT = process.env.PORT || 3001;
@@ -17,10 +17,10 @@ const db = mysql.createConnection(
     // MySQL username,
     user: 'root',
     // MySQL password
-    password: '',
-    database: 'classlist_db'
+    password: process.env.DB_PASS,
+    database: 'manager_db'
   },
-  console.log(`Connected to the classlist_db database.`)
+  console.log(`Connected to the manager_db database.`)
 );
 
 
