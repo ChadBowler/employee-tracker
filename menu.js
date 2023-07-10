@@ -1,6 +1,24 @@
 const inquirer = require('inquirer');
-// inquirer.registerPrompt("table", require("./index"))
 
+const read = require('./crud/read');
+const viewDepartments = read.viewDepartments;
+const viewRoles = read.viewRoles;
+const viewEmployees = read.viewEmployees;
+
+const create = require('./crud/create');
+const addDepartment = create.addDepartment;
+const addRole = create.addRole;
+const addEmployee = create.addEmployee;
+
+const update = require('./crud/update');
+// const updateDepartment = update.updateDepartment;
+// const updateRole = update.updateRole;
+const updateEmployee = update.updateEmployee;
+
+// const deleteItem = require('./crud/delete');
+// const deleteDepartment = deleteItem.deleteDepartment;
+// const deleteRole = deleteItem.deleteRole;
+// const deleteEmployee = deleteItem.deleteEmployee;
 
 function menu() {
     const mainQuestions = [ 
@@ -14,37 +32,43 @@ function menu() {
     inquirer
     .prompt(mainQuestions)
     .then((answers) => {
-        switch (answers) {
+        switch (answers.main) {
             case 'View All Employees':
-                
+                viewEmployees();
+                menu();
                 break;
             case 'Add Employee':
-            
+                getEmployeeInfo();
+                addEmployee(info);
+                menu();
                 break;
             case 'Update Employee Role':
-            
+                updateEmployee();
+                menu();
                 break;
             case 'View All Roles':
-            
+                viewRoles();
+                menu();
                 break;
             case 'Add Role':
-            
+                getRoleInfo()
+                addRole(info);
+                menu();
                 break;
             case 'View All Departments':
-            
+                viewDepartments();
+                menu();
                 break;
             case 'Add Department':
-            
+                const deptName = getDeptName();
+                addDepartment(deptName);
+                menu();
                 break;
             case 'Quit':
             
                 break;
-        
-            default:
-                break;
+ 
         }
-        console.log(answers);
-       
     })
     .catch((error) => {
         if (error.isTtyError) {
@@ -53,47 +77,73 @@ function menu() {
             console.error(error);
         }
     });
-}
+};
+
+function getDeptName() {
+    inquirer
+    .prompt(
+        {
+            type: 'input',
+            message: "What is the name of the department?",
+            name: 'deptName'
+        } 
+    )
+    .then((answers) => {
+        return answers;
+    });
+};
+
+function getRoleInfo() {
+    inquirer
+    .prompt(
+        {
+            type: 'input',
+            message: "What is the name of the role?",
+            name: 'roleName'
+        },
+        {
+            type: 'input',
+            message: "What is the salary of the role?",
+            name: 'roleSalary'
+        },
+        {
+            type: 'input',
+            message: "Which department does the role belong to?",
+            name: 'roleDepartment'
+        },
+    )
+    .then((answers) => {
+        return answers;
+    });
+};
+
+function getEmployeeInfo() {
+    inquirer
+    .prompt(
+        {
+            type: 'input',
+            message: "What is the employee's first name?",
+            name: 'employeeFirstName'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's last name?",
+            name: 'employeeLastName'
+        },
+        {
+            type: 'input',
+            message: "What is the employee's role?",
+            name: 'employeeRole'
+        },
+        {
+            type: 'input',
+            message: "Who is the employee's manager?",
+            name: 'employeeManager'
+        },
+    )
+    .then((answers) => {
+        return answers;
+    });
+};
 
 module.exports = menu;
-
-
-// [
-//     {
-//       type: "table",
-//       name: "workoutPlan",
-//       message: "Choose your workout plan for next week",
-//       columns: [
-//         {
-//           name: "Create",
-//           value: "create"
-//         },
-//         {
-//           name: "Read",
-//           value: "read"
-//         },
-//         {
-//           name: "Update",
-//           value: "update"
-//         },
-//         {
-//           name: "Delete",
-//           value: "delete"
-//         }
-//       ],
-//       rows: [
-//         {
-//           name: "Departments",
-//           value: "departments"
-//         },
-//         {
-//           name: "Roles",
-//           value: "roles"
-//         },
-//         {
-//           name: "Employees",
-//           value: "employees"
-//         }
-//       ]
-//     }
-//   ];

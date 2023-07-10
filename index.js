@@ -1,9 +1,10 @@
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 require('dotenv').config()
 const inquirer = require('inquirer');
 const logo = require('./assets/logo');
-const menu = require('./menu')
+const menu = require('./menu');
+const { config } = require('dotenv');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -12,25 +13,10 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Connect to database
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    // MySQL username,
-    user: 'root',
-    // MySQL password
-    password: process.env.DB_PASS,
-    database: 'manager_db'
-  },
-  console.log(`Connected to the manager_db database.`)
-);
-
 function init() {
     logo();
     menu();
 }
-init();
-
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
@@ -41,3 +27,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+init();
