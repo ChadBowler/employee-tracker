@@ -1,42 +1,43 @@
+const express = require('express');
+const mysql = require('mysql2');
+require('dotenv').config()
+const inquirer = require('inquirer');
+const logo = require('./assets/logo');
+const menu = require('./menu')
+
+const PORT = process.env.PORT || 3001;
+const app = express();
+
+// Express middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// Connect to database
+const db = mysql.createConnection(
+  {
+    host: 'localhost',
+    // MySQL username,
+    user: 'root',
+    // MySQL password
+    password: process.env.DB_PASS,
+    database: 'manager_db'
+  },
+  console.log(`Connected to the manager_db database.`)
+);
+
+function init() {
+    logo();
+    menu();
+}
+init();
 
 
-// select role.id, role.title, department.name, role.salary from role join department on role.department_id=department.id;
+// Default response for any other request (Not Found)
+app.use((req, res) => {
+  res.status(404).end();
+});
 
-/*
-*VIEW ALL DEPARTMENTS*
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
-SELECT 
-    id AS ID,
-    name AS Department
-FROM department;
-
-
-*VIEW ALL ROLES*
-
-SELECT 
-    role.id,
-    role.title,
-    department.name,
-    role.salary
-FROM
-    role
-JOIN
-    department on role.department_id=department.id;
-
-*VIEW ALL EMPLOYEES*
-
-SELECT
-    employee.id AS ID,
-    employee.first_name AS First,
-    employee.last_name AS Last,
-    role.title AS Role,
-    department.name AS Department,
-    role.salary AS Salary,
-    employee.manager_id AS Manager
-FROM ((role
-    INNER JOIN
-        employee ON role.id = employee.role_id)
-    INNER JOIN
-        department on role.department_id = department.id);
-
-*/
