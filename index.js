@@ -1,10 +1,10 @@
 const express = require('express');
-const mysql = require('mysql2/promise');
+// const mysql = require('mysql2/promise');
 require('dotenv').config()
-const inquirer = require('inquirer');
+// const inquirer = require('inquirer');
 const logo = require('./assets/logo');
 const menu = require('./menu');
-const { config } = require('dotenv');
+// const { config } = require('dotenv');
 
 const PORT = process.env.PORT || 3001;
 const app = express();

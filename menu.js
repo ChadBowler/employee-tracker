@@ -138,7 +138,7 @@ function menu() {
                 });
                 break;
             case 'Quit':
-            
+                quit();
                 break;
  
         }
@@ -307,5 +307,20 @@ async function employeeOptions() {
     `
     return con.query(deptQuery)
 };
+
+async function quit() {
+    const { confirm } = await inquirer.prompt([
+        {
+        name: "confirm",
+        type: "confirm",
+        message: "Are you sure you want to exit?",
+        },
+    ]);
+    
+    if (confirm) {
+        process.exit();
+    }
+}
+
 
 module.exports = menu;

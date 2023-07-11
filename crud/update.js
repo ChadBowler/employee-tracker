@@ -8,7 +8,6 @@ const db = mysql.createConnection(
         database: process.env.DB_DATABASE,
 
     },
-    // console.log(`Connected to the manager_db database.`)
 );
 
 function updateQuery(type) {
@@ -20,6 +19,7 @@ function updateQuery(type) {
     });
 };
 
+//possible future options
 
 // function updateDepartment() {
 //     const updateDeptQuery = `

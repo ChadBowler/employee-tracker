@@ -1,4 +1,4 @@
-const { json } = require('express');
+// const { json } = require('express');
 const { printTable } = require('console-table-printer');
 const mysql = require('mysql2');
 
@@ -10,7 +10,6 @@ const db = mysql.createConnection(
         database: process.env.DB_DATABASE,
 
     },
-    // console.log(`Connected to the manager_db database.`)
 );
 
 function viewQuery(type) {

@@ -7,7 +7,6 @@ const db = mysql.createConnection(
         password: process.env.DB_PASS,
         database: process.env.DB_DATABASE,
     },
-    // console.log(`Connected to the manager_db database.`)
 );
 
 function addQuery(type) {
@@ -15,7 +14,6 @@ function addQuery(type) {
         if (err) {
             console.log(err);
         }
-        // console.log(res);
         return res;
     });
 };
