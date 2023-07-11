@@ -188,19 +188,7 @@ async function departmentOptions() {
             name AS Department
         FROM department;
     `
-    return con.query(deptQuery 
-    //     function (err, res) {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     let options = [];
-    //     res.forEach(element => {
-    //         options.push(element.Department)
-    //     });
-    //     console.log(options);
-    //     return options;
-    // }
-    )
-}
+    return con.query(deptQuery)
+};
 
 module.exports = menu;

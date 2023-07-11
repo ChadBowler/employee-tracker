@@ -52,19 +52,21 @@ function viewRoles() {
 
 function viewEmployees() {
     const viewEmpQuery = `
-    SELECT
+    SELECT 
         employee.id AS ID,
         employee.first_name AS First,
         employee.last_name AS Last,
         role.title AS Role,
         department.name AS Department,
         role.salary AS Salary,
-        employee.manager_id AS Manager
-    FROM ((role
-        INNER JOIN
+        CONCAT_WS(' ', B.first_name, B.last_name) AS Manager
+    FROM (((role
+        JOIN
             employee ON role.id = employee.role_id)
-        INNER JOIN
-            department on role.department_id = department.id);
+        JOIN
+            department on role.department_id = department.id)
+        LEFT JOIN
+            employee B on B.id = employee.manager_id);
     `
     viewQuery(viewEmpQuery);
 };
