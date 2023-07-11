@@ -1,4 +1,5 @@
 const { json } = require('express');
+const { printTable } = require('console-table-printer');
 const mysql = require('mysql2');
 
 const db = mysql.createConnection(
@@ -9,7 +10,7 @@ const db = mysql.createConnection(
         database: process.env.DB_DATABASE,
 
     },
-    console.log(`Connected to the manager_db database.`)
+    // console.log(`Connected to the manager_db database.`)
 );
 
 function viewQuery(type) {
@@ -17,8 +18,11 @@ function viewQuery(type) {
         if (err) {
             console.log(err);
         }
-        console.table(res);
-        return res;
+        console.log('');
+        // console.table(res);
+        printTable(res)
+        
+        // return res;
     });
 };
 
@@ -37,10 +41,10 @@ function viewDepartments() {
 function viewRoles() {
     const viewRolesQuery = `
     SELECT 
-        role.id,
-        role.title,
-        department.name,
-        role.salary
+        role.id AS ID,
+        role.title AS Title,
+        department.name AS Department,
+        role.salary AS Salary
     FROM
         role
     JOIN
