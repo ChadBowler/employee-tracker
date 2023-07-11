@@ -6,7 +6,6 @@ const db = mysql.createConnection(
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DB_DATABASE,
-
     },
     console.log(`Connected to the manager_db database.`)
 );
@@ -20,7 +19,6 @@ function addQuery(type) {
         return res;
     });
 };
-
 
 function addDepartment(name) {
 
@@ -50,8 +48,6 @@ function addEmployee(info) {
     `
     addQuery(addEmpQuery);
 };
-
-
 
 module.exports = {
     addDepartment: addDepartment,

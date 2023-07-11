@@ -60,9 +60,10 @@ function menu() {
                 menu();
                 break;
             case 'Add Department':
-                const deptName = getDeptName();
-                addDepartment(deptName);
-                menu();
+                getDeptName().then((answers) => {
+                    addDepartment(answers.deptName);
+                    menu();
+                });
                 break;
             case 'Quit':
             
@@ -80,7 +81,7 @@ function menu() {
 };
 
 function getDeptName() {
-    inquirer
+   return inquirer
     .prompt(
         {
             type: 'input',
@@ -88,9 +89,7 @@ function getDeptName() {
             name: 'deptName'
         } 
     )
-    .then((answers) => {
-        return answers;
-    });
+   
 };
 
 function getRoleInfo() {

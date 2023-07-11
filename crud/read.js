@@ -17,7 +17,7 @@ function viewQuery(type) {
         if (err) {
             console.log(err);
         }
-        console.log(res);
+        console.table(res);
         return res;
     });
 };
