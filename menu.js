@@ -1,4 +1,12 @@
 const inquirer = require('inquirer');
+const mysql = require('mysql2/promise');
+const connectionOptions = {
+    host: process.env.HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
+
+}
 
 const read = require('./crud/read');
 const viewDepartments = read.viewDepartments;
@@ -19,6 +27,8 @@ const updateEmployee = update.updateEmployee;
 // const deleteDepartment = deleteItem.deleteDepartment;
 // const deleteRole = deleteItem.deleteRole;
 // const deleteEmployee = deleteItem.deleteEmployee;
+
+const db = mysql.createConnection(connectionOptions);
 
 function menu() {
     console.log('');
@@ -52,9 +62,17 @@ function menu() {
                 menu();
                 break;
             case 'Add Role':
-                getRoleInfo()
-                addRole(info);
-                menu();
+                departmentOptions().then((answers) => {
+                        let options = [];
+                        answers[0].forEach(element => {
+                            options.push(element.Department)
+                        })
+                    getRoleInfo(options).then((answers) => {
+                        addRole(answers)
+                        // menu();
+                    })
+                })
+                
                 break;
             case 'View All Departments':
                 viewDepartments();
@@ -93,9 +111,9 @@ function getDeptName() {
    
 };
 
-function getRoleInfo() {
-    inquirer
-    .prompt(
+function getRoleInfo(options) {
+    return inquirer
+    .prompt([
         {
             type: 'input',
             message: "What is the name of the role?",
@@ -107,10 +125,11 @@ function getRoleInfo() {
             name: 'roleSalary'
         },
         {
-            type: 'input',
+            type: 'list',
             message: "Which department does the role belong to?",
+            choices: options,
             name: 'roleDepartment'
-        },
+        }]
     )
     .then((answers) => {
         return answers;
@@ -119,7 +138,7 @@ function getRoleInfo() {
 
 function getEmployeeInfo() {
     inquirer
-    .prompt(
+    .prompt([
         {
             type: 'input',
             message: "What is the employee's first name?",
@@ -139,11 +158,34 @@ function getEmployeeInfo() {
             type: 'input',
             message: "Who is the employee's manager?",
             name: 'employeeManager'
-        },
+        }]
     )
     .then((answers) => {
         return answers;
     });
 };
+
+async function departmentOptions() {
+    const con = await mysql.createConnection(connectionOptions)
+    const deptQuery = `
+        SELECT
+            id AS ID,
+            name AS Department
+        FROM department;
+    `
+    return con.query(deptQuery 
+    //     function (err, res) {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    //     let options = [];
+    //     res.forEach(element => {
+    //         options.push(element.Department)
+    //     });
+    //     console.log(options);
+    //     return options;
+    // }
+    )
+}
 
 module.exports = menu;

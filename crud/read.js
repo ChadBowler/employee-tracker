@@ -19,10 +19,7 @@ function viewQuery(type) {
             console.log(err);
         }
         console.log('');
-        // console.table(res);
         printTable(res)
-        
-        // return res;
     });
 };
 

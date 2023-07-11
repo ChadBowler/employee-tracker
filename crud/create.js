@@ -31,10 +31,8 @@ function addDepartment(name) {
 
 function addRole(info) {
     const addRoleQuery = `
-        SELECT
-            id AS ID,
-            name AS Department
-        FROM department;
+    INSERT INTO role (title, department_id, salary)
+    VALUES ("${info.roleName}", 1, ${info.roleSalary})
     `
     addQuery(addRoleQuery);
 };
