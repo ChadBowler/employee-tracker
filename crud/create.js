@@ -30,9 +30,10 @@ function addDepartment(name) {
 };
 
 function addRole(info) {
+    console.log(info);
     const addRoleQuery = `
     INSERT INTO role (title, department_id, salary)
-    VALUES ("${info.roleName}", 1, ${info.roleSalary})
+    VALUES ("${info.roleName}", ${info.roleDepartment}, ${info.roleSalary})
     `
     addQuery(addRoleQuery);
 };

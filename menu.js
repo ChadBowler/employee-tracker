@@ -28,6 +28,13 @@ const updateEmployee = update.updateEmployee;
 // const deleteRole = deleteItem.deleteRole;
 // const deleteEmployee = deleteItem.deleteEmployee;
 
+class ChoicePrompt {
+    constructor(name, value) {
+        this.name = name
+        this.value = value
+    }
+}
+
 const db = mysql.createConnection(connectionOptions);
 
 function menu() {
@@ -64,12 +71,14 @@ function menu() {
             case 'Add Role':
                 departmentOptions().then((answers) => {
                         let options = [];
+                        let optionsValue = []
                         answers[0].forEach(element => {
+                            optionsValue.push(element.ID)
                             options.push(element.Department)
                         })
-                    getRoleInfo(options).then((answers) => {
+                    getRoleInfo(options, optionsValue).then((answers) => {
                         addRole(answers)
-                        // menu();
+                        menu();
                     })
                 })
                 
@@ -111,7 +120,13 @@ function getDeptName() {
    
 };
 
-function getRoleInfo(options) {
+function getRoleInfo(options, optionsValue) {
+    let promptChoices = []
+    for (let i = 0; i < options.length; i++) {
+        let newChoice  = new ChoicePrompt(options[i], optionsValue[i])
+        promptChoices.push(newChoice)
+    }
+        
     return inquirer
     .prompt([
         {
@@ -127,7 +142,7 @@ function getRoleInfo(options) {
         {
             type: 'list',
             message: "Which department does the role belong to?",
-            choices: options,
+            choices: promptChoices,
             name: 'roleDepartment'
         }]
     )
