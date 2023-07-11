@@ -16,38 +16,36 @@ function updateQuery(type) {
         if (err) {
             console.log(err);
         }
-        console.log(res);
         return res;
     });
 };
 
 
-function updateDepartment() {
-    const updateDeptQuery = `
-        SELECT
-            id AS ID,
-            name AS Department
-        FROM department;
-    `
-    updateQuery(updateDeptQuery);
-};
+// function updateDepartment() {
+//     const updateDeptQuery = `
+//         SELECT
+//             id AS ID,
+//             name AS Department
+//         FROM department;
+//     `
+//     updateQuery(updateDeptQuery);
+// };
 
-function updateRole() {
-    const updateRoleQuery = `
-        SELECT
-            id AS ID,
-            name AS Department
-        FROM department;
-    `
-    updateQuery(updateRoleQuery);
-};
+// function updateRole() {
+//     const updateRoleQuery = `
+//         SELECT
+//             id AS ID,
+//             name AS Department
+//         FROM department;
+//     `
+//     updateQuery(updateRoleQuery);
+// };
 
-function updateEmployee() {
+function updateEmployee(info) {
     const updateEmpQuery = `
-        SELECT
-            id AS ID,
-            name AS Department
-        FROM department;
+        UPDATE employee
+        SET role_id = ${info.newRole}
+        WHERE id = ${info.employeeId}
     `
     updateQuery(updateEmpQuery);
 };
@@ -55,7 +53,7 @@ function updateEmployee() {
 
 
 module.exports = {
-    updateDepartment: updateDepartment,
-    updateRole: updateRole,
+    // updateDepartment: updateDepartment,
+    // updateRole: updateRole,
     updateEmployee: updateEmployee
 };

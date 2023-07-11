@@ -56,13 +56,57 @@ function menu() {
                 menu();
                 break;
             case 'Add Employee':
-                getEmployeeInfo();
-                addEmployee(info);
-                menu();
+                roleOptions().then((answers) => {
+                    let roleName = []
+                    let roleValue = []
+                    answers[0].forEach(element => {
+                        roleValue.push(element.id)
+                        roleName.push(element.title)
+                    })
+                    roleArray = [roleName, roleValue]
+                    return roleArray
+                }).then(() => {
+                    employeeOptions().then((answers) => {
+                        let employeeName = []
+                        let employeeValue = []
+                        answers[0].forEach(element => {
+                            employeeValue.push(element.id)
+                            employeeName.push(element.name)
+                        })
+                        employeeArray = [employeeName, employeeValue]
+                        getEmployeeInfo(roleArray, employeeArray).then((answers) => {
+                            addEmployee(answers);
+                            menu();
+                        })
+                        
+                    })
+                })             
                 break;
             case 'Update Employee Role':
-                updateEmployee();
-                menu();
+                roleOptions().then((answers) => {
+                    let roleName = []
+                    let roleValue = []
+                    answers[0].forEach(element => {
+                        roleValue.push(element.id)
+                        roleName.push(element.title)
+                    })
+                    roleArray = [roleName, roleValue]
+                    return roleArray
+                }).then(() => {
+                    employeeOptions().then((answers) => {
+                        let employeeName = []
+                        let employeeValue = []
+                        answers[0].forEach(element => {
+                            employeeValue.push(element.id)
+                            employeeName.push(element.name)
+                        })
+                        employeeArray = [employeeName, employeeValue]
+                        getUpdateInfo(roleArray, employeeArray).then((answers) => {
+                            updateEmployee(answers);
+                            menu();
+                        })
+                    })
+                })
                 break;
             case 'View All Roles':
                 viewRoles();
@@ -151,8 +195,22 @@ function getRoleInfo(options, optionsValue) {
     });
 };
 
-function getEmployeeInfo() {
-    inquirer
+function getEmployeeInfo(roleArray, employeeArray) {
+    let roleChoices = []
+    let employeeChoices = []
+    let roleNames = roleArray[0]
+    let roleValues = roleArray[1]
+    let employeeNames = employeeArray[0]
+    let employeeValues = employeeArray[1]
+    for (let i = 0; i < roleNames.length; i++) {
+        let newChoice  = new ChoicePrompt(roleNames[i], roleValues[i])
+        roleChoices.push(newChoice)
+    };
+    for (let i = 0; i < employeeNames.length; i++) {
+        let newChoice  = new ChoicePrompt(employeeNames[i], employeeValues[i])
+        employeeChoices.push(newChoice)
+    };
+    return inquirer
     .prompt([
         {
             type: 'input',
@@ -165,13 +223,15 @@ function getEmployeeInfo() {
             name: 'employeeLastName'
         },
         {
-            type: 'input',
+            type: 'list',
             message: "What is the employee's role?",
+            choices: roleChoices,
             name: 'employeeRole'
         },
         {
-            type: 'input',
+            type: 'list',
             message: "Who is the employee's manager?",
+            choices: employeeChoices,
             name: 'employeeManager'
         }]
     )
@@ -179,6 +239,41 @@ function getEmployeeInfo() {
         return answers;
     });
 };
+function getUpdateInfo(roleArray, employeeArray) {
+    let roleChoices = []
+    let employeeChoices = []
+    let roleNames = roleArray[0]
+    let roleValues = roleArray[1]
+    let employeeNames = employeeArray[0]
+    let employeeValues = employeeArray[1]
+    for (let i = 0; i < roleNames.length; i++) {
+        let newChoice  = new ChoicePrompt(roleNames[i], roleValues[i])
+        roleChoices.push(newChoice)
+    };
+    for (let i = 0; i < employeeNames.length; i++) {
+        let newChoice  = new ChoicePrompt(employeeNames[i], employeeValues[i])
+        employeeChoices.push(newChoice)
+    };
+    return inquirer
+    .prompt([
+        {
+            type: 'list',
+            message: "Which employee would you like to update?",
+            choices: employeeChoices,
+            name: 'employeeId'
+        },
+        {
+            type: 'list',
+            message: "What role do you want to give them?",
+            choices: roleChoices,
+            name: 'newRole'
+        }
+        ]
+    )
+    .then((answers) => {
+        return answers;
+    });
+}
 
 async function departmentOptions() {
     const con = await mysql.createConnection(connectionOptions)
@@ -187,6 +282,28 @@ async function departmentOptions() {
             id AS ID,
             name AS Department
         FROM department;
+    `
+    return con.query(deptQuery)
+};
+
+async function roleOptions() {
+    const con = await mysql.createConnection(connectionOptions)
+    const roleQuery = `
+        SELECT
+            id,
+            title
+        FROM role;
+    `
+    return con.query(roleQuery)
+};
+
+async function employeeOptions() {
+    const con = await mysql.createConnection(connectionOptions)
+    const deptQuery = `
+        SELECT
+            id,
+            CONCAT_WS(' ', employee.first_name, employee.last_name) AS name
+        FROM employee;
     `
     return con.query(deptQuery)
 };
