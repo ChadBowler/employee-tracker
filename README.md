@@ -10,8 +10,8 @@ Employee Tracker is a content management system that tracks company departments,
 - [Installation](#Installation)
 - [Usage](#Usage)
 - [Credits](#Credits)
-- [Walkthrough](#Video)
-- [License](#Credits)
+- [Walkthrough](#Walkthrough)
+- [License](#License)
 - [Badges](#Badges)
 - [Features](#Features)
 - [Contributing](#Contributing)
@@ -26,7 +26,7 @@ Employee Tracker is a content management system that tracks company departments,
 * Once all packages are installed, run the mysql program in the terminal, and run the command "source db/schema.sql" to set up the database. You can then start the program by exiting mysql, and type "node index" into the terminal. The program should load up. Follow the prompts to use the program.
 
 
-## Video Walkthrough
+## Walkthrough
 
 https://github.com/ChadBowler/employee-tracker/assets/127648744/5bd0afe6-ecad-4d89-aac9-30ae5f85057b
 
