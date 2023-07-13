@@ -1,41 +1,15 @@
-// const express = require('express');
-// const menu = require('../menu');
-// const { printTable } = require('console-table-printer');
-// const mysql = require('mysql2');
 const mysql = require('mysql2/promise');
 const connectionOptions = {
     host: process.env.HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
-
-}
-
-
-// const db = mysql.createConnection(
-//     {
-//         host: process.env.HOST,
-//         user: process.env.DB_USER,
-//         password: process.env.DB_PASS,
-//         database: process.env.DB_DATABASE,
-//     },
-// );
-
-// function viewQuery(type) {
-//     db.query(type, function (err, res) {
-//         if (err) {
-//             console.log(err);
-//         }
-//         console.log('85');
-//         printTable(res);
-//     });
-// };
+};
 
 async function viewQuery(type) {
     const con = await mysql.createConnection(connectionOptions)
     return await con.query(type);
 };
-
 
 async function viewDepartments() {
     const viewDeptQuery = `
@@ -46,7 +20,6 @@ async function viewDepartments() {
     `
     return await viewQuery(viewDeptQuery);
 };
-
 
 async function viewRoles() {
     const viewRolesQuery = `
@@ -81,9 +54,7 @@ async function viewEmployees() {
         LEFT JOIN
             employee B on B.id = employee.manager_id);
     `
-    
     return await viewQuery(viewEmpQuery);
-    
 };
 
 module.exports = {

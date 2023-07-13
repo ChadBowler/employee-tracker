@@ -6,8 +6,7 @@ const connectionOptions = {
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
-
-}
+};
 
 const read = require('./crud/read');
 const viewDepartments = read.viewDepartments;
@@ -20,10 +19,12 @@ const addRole = create.addRole;
 const addEmployee = create.addEmployee;
 
 const update = require('./crud/update');
+const updateEmployee = update.updateEmployee;
+//possible future features
 // const updateDepartment = update.updateDepartment;
 // const updateRole = update.updateRole;
-const updateEmployee = update.updateEmployee;
 
+//possible future features
 // const deleteItem = require('./crud/delete');
 // const deleteDepartment = deleteItem.deleteDepartment;
 // const deleteRole = deleteItem.deleteRole;
@@ -34,9 +35,7 @@ class ChoicePrompt {
         this.name = name
         this.value = value
     }
-}
-
-// const db = mysql.createConnection(connectionOptions);
+};
 
 function menu() {
     console.log('');
@@ -128,7 +127,6 @@ function menu() {
                         menu();
                     })
                 })
-                
                 break;
             case 'View All Departments':
                 const departments = await viewDepartments();
@@ -144,7 +142,6 @@ function menu() {
             case 'Quit':
                 quit();
                 break;
- 
         }
     })
     .catch((error) => {
@@ -165,7 +162,6 @@ function getDeptName() {
             name: 'deptName'
         } 
     )
-   
 };
 
 function getRoleInfo(options, optionsValue) {
@@ -173,7 +169,7 @@ function getRoleInfo(options, optionsValue) {
     for (let i = 0; i < options.length; i++) {
         let newChoice  = new ChoicePrompt(options[i], optionsValue[i])
         promptChoices.push(newChoice)
-    }
+    };
         
     return inquirer
     .prompt([
@@ -214,7 +210,6 @@ function getEmployeeInfo(roleArray, employeeArray) {
         let newChoice  = new ChoicePrompt(employeeNames[i], employeeValues[i])
         employeeChoices.push(newChoice)
     };
-    // console.log(employeeChoices);
     return inquirer
     .prompt([
         {
@@ -244,6 +239,7 @@ function getEmployeeInfo(roleArray, employeeArray) {
         return answers;
     });
 };
+
 function getUpdateInfo(roleArray, employeeArray) {
     let roleChoices = []
     let employeeChoices = []
@@ -278,7 +274,7 @@ function getUpdateInfo(roleArray, employeeArray) {
     .then((answers) => {
         return answers;
     });
-}
+};
 
 async function departmentOptions() {
     const con = await mysql.createConnection(connectionOptions)
@@ -325,7 +321,7 @@ async function quit() {
     if (confirm) {
         process.exit();
     }
-}
+};
 
 
 module.exports = menu;

@@ -19,7 +19,6 @@ function addQuery(type) {
 };
 
 function addDepartment(name) {
-
     const addDeptQuery = `
     INSERT INTO department (name)
     VALUES ("${name}");

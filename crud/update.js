@@ -50,8 +50,6 @@ function updateEmployee(info) {
     updateQuery(updateEmpQuery);
 };
 
-
-
 module.exports = {
     // updateDepartment: updateDepartment,
     // updateRole: updateRole,
