@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const { printTable } = require('console-table-printer');
 const mysql = require('mysql2/promise');
 const connectionOptions = {
     host: process.env.HOST,
@@ -35,7 +36,7 @@ class ChoicePrompt {
     }
 }
 
-const db = mysql.createConnection(connectionOptions);
+// const db = mysql.createConnection(connectionOptions);
 
 function menu() {
     console.log('');
@@ -49,10 +50,11 @@ function menu() {
     ];
     inquirer
     .prompt(mainQuestions)
-    .then((answers) => {
+    .then(async (answers) => {
         switch (answers.main) {
             case 'View All Employees':
-                viewEmployees();
+                const employees =  await viewEmployees()
+                printTable(employees[0]);
                 menu();
                 break;
             case 'Add Employee':
@@ -109,7 +111,8 @@ function menu() {
                 })
                 break;
             case 'View All Roles':
-                viewRoles();
+                const roles = await viewRoles();
+                printTable(roles[0]);
                 menu();
                 break;
             case 'Add Role':
@@ -128,7 +131,8 @@ function menu() {
                 
                 break;
             case 'View All Departments':
-                viewDepartments();
+                const departments = await viewDepartments();
+                printTable(departments[0]);
                 menu();
                 break;
             case 'Add Department':
@@ -197,7 +201,7 @@ function getRoleInfo(options, optionsValue) {
 
 function getEmployeeInfo(roleArray, employeeArray) {
     let roleChoices = []
-    let employeeChoices = []
+    let employeeChoices = [{ name: 'none', value: null }]
     let roleNames = roleArray[0]
     let roleValues = roleArray[1]
     let employeeNames = employeeArray[0]
@@ -210,6 +214,7 @@ function getEmployeeInfo(roleArray, employeeArray) {
         let newChoice  = new ChoicePrompt(employeeNames[i], employeeValues[i])
         employeeChoices.push(newChoice)
     };
+    // console.log(employeeChoices);
     return inquirer
     .prompt([
         {

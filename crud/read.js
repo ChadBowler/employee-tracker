@@ -1,40 +1,54 @@
-// const { json } = require('express');
-const { printTable } = require('console-table-printer');
-const mysql = require('mysql2');
+// const express = require('express');
+// const menu = require('../menu');
+// const { printTable } = require('console-table-printer');
+// const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
+const connectionOptions = {
+    host: process.env.HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
 
-const db = mysql.createConnection(
-    {
-        host: process.env.HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.DB_DATABASE,
+}
 
-    },
-);
 
-function viewQuery(type) {
-    db.query(type, function (err, res) {
-        if (err) {
-            console.log(err);
-        }
-        console.log('');
-        printTable(res)
-    });
+// const db = mysql.createConnection(
+//     {
+//         host: process.env.HOST,
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PASS,
+//         database: process.env.DB_DATABASE,
+//     },
+// );
+
+// function viewQuery(type) {
+//     db.query(type, function (err, res) {
+//         if (err) {
+//             console.log(err);
+//         }
+//         console.log('85');
+//         printTable(res);
+//     });
+// };
+
+async function viewQuery(type) {
+    const con = await mysql.createConnection(connectionOptions)
+    return await con.query(type);
 };
 
 
-function viewDepartments() {
+async function viewDepartments() {
     const viewDeptQuery = `
         SELECT
             id AS ID,
             name AS Department
         FROM department;
     `
-    viewQuery(viewDeptQuery);
+    return await viewQuery(viewDeptQuery);
 };
 
 
-function viewRoles() {
+async function viewRoles() {
     const viewRolesQuery = `
     SELECT 
         role.id AS ID,
@@ -46,16 +60,16 @@ function viewRoles() {
     JOIN
         department on role.department_id=department.id;
     `
-    viewQuery(viewRolesQuery);
+    return await viewQuery(viewRolesQuery);
 };
 
-function viewEmployees() {
+async function viewEmployees() {
     const viewEmpQuery = `
     SELECT 
         employee.id AS ID,
         employee.first_name AS First,
         employee.last_name AS Last,
-        role.title AS Role,
+        role.title AS Title,
         department.name AS Department,
         role.salary AS Salary,
         CONCAT_WS(' ', B.first_name, B.last_name) AS Manager
@@ -67,7 +81,9 @@ function viewEmployees() {
         LEFT JOIN
             employee B on B.id = employee.manager_id);
     `
-    viewQuery(viewEmpQuery);
+    
+    return await viewQuery(viewEmpQuery);
+    
 };
 
 module.exports = {

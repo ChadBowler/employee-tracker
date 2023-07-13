@@ -28,7 +28,6 @@ function addDepartment(name) {
 };
 
 function addRole(info) {
-    console.log(info);
     const addRoleQuery = `
     INSERT INTO role (title, department_id, salary)
     VALUES ("${info.roleName}", ${info.roleDepartment}, ${info.roleSalary});
