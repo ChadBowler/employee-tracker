@@ -18,11 +18,11 @@ Employee Tracker is a content management system that tracks company departments,
 
 ## Installation
 
-* Clone the Github repository, and install node packages by typing 'npm install' into the terminal. 
+* Clone the Github repository, and install node packages by typing "npm install" into the terminal. 
 
 ## Usage
 
-* Once all packages are installed, run the mysql program in the terminal, and run the command 'source db/schema.sql' to set up the database. You can then start the program by exiting mysql, and type 'node index' into the terminal. The program should load up. Follow the prompts to use the program.
+* Once all packages are installed, run the mysql program in the terminal, and run the command "source db/schema.sql" to set up the database. You can then start the program by exiting mysql, and type "node index" into the terminal. The program should load up. Follow the prompts to use the program.
 
 
 ## License
